@@ -6,7 +6,7 @@ import { parse, print } from 'graphql';
 
 const initialQuery = `
 query {
-  user: user_variables(
+  data: hoge (
     q: { key: "value" }
     l: ["list1", "liat2"]
   ) {
