@@ -1,6 +1,6 @@
 import type { FieldNode, ValueNode } from 'graphql';
 
-export function Fragment(): FieldNode {
+export const fragment = (): FieldNode => {
     return {
       kind: 'Field',
       alias: {
@@ -39,7 +39,7 @@ export function Fragment(): FieldNode {
           kind: 'Argument',
           name: {
             kind: 'Name',
-            value: 'args',
+            value: 'l',
           },
           value: {
             kind: 'ListValue',
