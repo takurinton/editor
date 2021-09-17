@@ -4,18 +4,23 @@ import { useEffect, useState } from "preact/hooks"
 const ASTRender = (
   { 
     node, 
-    onChange 
+    onChange,
   }: { 
     node: ASTNode;
-    onChange?: (ast: ASTNode) => void
+    onChange?: (ast: ASTNode) => void;
   }
 ): JSX.Element => {
   if (node.kind === 'Document') {
+    const [n, setN] = useState<ASTNode>(node);
+    useEffect(() => {
+      onChange ? onChange(n) : console.log('onChange is undefined');
+    }, [n]);
+
     return (
       <>
         {
           node.definitions.map((n, i) => (
-            <ASTRender node={n} key={i} />
+            <ASTRender node={n} key={i} onChange={n => setN(n)}/>
           ))
         }
       </>
@@ -23,7 +28,11 @@ const ASTRender = (
   };
 
   if (node.kind === 'OperationDefinition') {
-    console.log(node.kind);
+    const [n, setN] = useState<ASTNode>(node);
+    useEffect(() => {
+      onChange ? onChange(n) : console.log('onChange is undefined');
+    }, [n]);
+
     return (
       <>
         <ASTRender node={node.selectionSet} />
@@ -32,13 +41,17 @@ const ASTRender = (
   };
 
   if (node.kind === 'SelectionSet') {
-    console.log(node.kind);
+    const [n, setN] = useState<ASTNode>(node);
+    useEffect(() => {
+      onChange ? onChange(n) : console.log('onChange is undefined');
+    }, [n]);
+
     return (
       <>
         {node.selections.map((selection, i) => {
           return (
             <>
-              <ASTRender node={selection} />
+              <ASTRender node={selection} onChange={n => setN(n)} />
             </>
           );
         })}
@@ -47,6 +60,11 @@ const ASTRender = (
   };
 
   if (node.kind === 'Field') {
+    const [n, setN] = useState<ASTNode>(node);
+    useEffect(() => {
+      onChange ? onChange(n) : console.log('onChange is undefined');
+    }, [n]);
+
     return (
       <>
         {node.alias && (
@@ -60,27 +78,38 @@ const ASTRender = (
         {node.arguments && (
           <>
             {node.arguments.map((argument, i) => {
-              return <ASTRender key={i} node={argument} />;
+              return <ASTRender key={i} node={argument} onChange={n => setN(n)} />;
             })}
           </>
         )}
         {')'}
         {node.directives?.map((directive, i) => {
-          return <ASTRender key={i} node={directive} />;
+          return <ASTRender key={i} node={directive}/>;
         })}
       </>
     )
   };
 
   if (node.kind === 'Argument') {
+    const [n, setN] = useState<ASTNode>(node);
+    useEffect(() => {
+      onChange ? onChange(n) : console.log('onChange is undefined');
+    }, [n]);
+
     return (
       <>
-        <ASTRender node={node.name} /> { ':' } <ASTRender node={node.value} />
+        <ASTRender node={node.name} /> { ':' } <ASTRender node={node.value} onChange={n => setN(n)} />
       </>
     );
   };
 
   if (node.kind === 'Name') {
+    // const [n, setN] = useState<ASTNode>(node);
+    // useEffect(() => {
+    //   console.log(n)
+    //   onChange ? onChange(n) : console.log('onChange is undefined');
+    // }, [n]);
+
     return (
       <>
         <code>{node.value}</code>
@@ -89,6 +118,11 @@ const ASTRender = (
   };
 
   if (node.kind === 'ListValue') {
+    const [n, setN] = useState<ASTNode>(node);
+    useEffect(() => {
+      onChange ? onChange(n) : console.log('onChange is undefined');
+    }, [n]);
+
     return (
       <>
         {'['}
@@ -96,7 +130,7 @@ const ASTRender = (
           return (
             <>
               {`${i ? ', ' : ''}`}
-              <ASTRender node={v} />
+              <ASTRender node={v} onChange={n => setN(n)} />
             </>
           );
         })}
@@ -106,6 +140,11 @@ const ASTRender = (
   }
 
   if (node.kind === 'ObjectValue') {
+    const [n, setN] = useState<ASTNode>(node);
+    useEffect(() => {
+      onChange ? onChange(n) : console.log('onChange is undefined');
+    }, [n]);
+
     return (
       <>
         {
@@ -115,7 +154,7 @@ const ASTRender = (
               node.fields.map((v, i) => {
               return (
                 <>
-                  <code>{v.name.value}: {v.value.value}</code>{ ', ' }<br />
+                  <code>{v.name.value}:</code><input type="text" value={v.value.value} onInput={e => setN(e.target.value)}></input>{ ', ' }<br />
                 </>
                 )
               })
@@ -128,9 +167,21 @@ const ASTRender = (
   }
 
   if (node.kind === 'StringValue') {
+    const [n, setN] = useState<ASTNode>(node);
+    useEffect(() => {
+      console.log(n)
+      onChange ? onChange(n) : console.log('onChange is undefined');
+    }, [n]);
+
+    const handleChange = (e) => {
+      const _n = JSON.stringify(n);
+      JSON.parse(_n).value = e.target.value;
+      setN(JSON.parse(_n));
+    };
+
     return (
       <>
-        <code>{node.value}</code>
+        <input type="text" value={n.value} onInput={handleChange}></input>
       </>
     );
   };
@@ -147,13 +198,13 @@ export const Editor = (
     onChange: (query: string, ast: DocumentNode) => void
 }) => {
 
-  const [q, setQ] = useState(query);
-  const [a, setA] = useState(ast);
+  const [q, setQ] = useState<string>(query);
+  const [a, setA] = useState<ASTNode>(ast);
 
   useEffect(() => {
     console.log(query)
     onChange(q, ast);
-  }, [q]);
+  }, [a]);
 
   const onChangeQuery = (e) => {
     console.log(e.target.value);
@@ -170,7 +221,7 @@ export const Editor = (
         padding: '30px'
       }
     }>
-      <ASTRender node={ast} onChange={onChangeQuery}/>
+      <ASTRender node={ast} onChange={(a => setA(a))}/>
     </div>
   );
 }
