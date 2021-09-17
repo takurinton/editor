@@ -13,10 +13,15 @@ export const Preview = (
     <div style={
       {
         width: '100%', 
-        background: 'red', 
+        textAlign: 'left', 
+        paddingLeft: '50px'
       }
     }>
-      { query }
+      <pre style={{ background: '#FFFFF0' }}>
+        <code>
+            {query}
+        </code>
+      </pre>
     </div>
   );
 }
