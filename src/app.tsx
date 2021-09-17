@@ -15,18 +15,23 @@ query {
 }
 `;
 
+const initialAst = parse(initialQuery)
+
 export function App() {
   const [query, setQuery] = useState(initialQuery); 
-  const [ast, setAst] = useState(parse(query));
+  const [ast, setAst] = useState(initialAst);
 
-  const f = fragment();
+  // const f = fragment();
+  // useEffect(() => {
+  //   setQuery(query);
+  // }, [query]);
+
   useEffect(() => {
-    const p = parse(query); // DocumentNode
-    setAst(p)
-  }, [query]);
+    const ast = parse(query); // DocumentNode
+    setAst(ast);
+    console.log(ast)
+  }, []);
 
-  // const c = print()
-  console.log(f)
   return (
     <div style={
       {
