@@ -15,8 +15,8 @@ export const Editor = (
   const [q, setQ] = useState(query);
 
   useEffect(() => {
+    console.log(query)
     onChange(q, ast);
-    // console.log(query);
   }, [q]);
 
   const onChangeQuery = (e) => {
@@ -31,7 +31,7 @@ export const Editor = (
         background: 'gray', 
       }
     }>
-      <textarea name="query" id="" cols="30" rows="10" value={q} onChange={onChangeQuery}></textarea>
+      <textarea name="query" id="query" cols="30" rows="10" value={q} onInput={onChangeQuery}></textarea>
     </div>
   );
 }
