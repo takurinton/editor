@@ -1,7 +1,14 @@
 import { ASTNode, DocumentNode } from "graphql"
 import { useEffect, useState } from "preact/hooks"
 
-const ASTRender = ({ node }: { node: ASTNode }): JSX.Element => {
+const ASTRender = (
+  { 
+    node, 
+    onChange 
+  }: { 
+    node: ASTNode;
+    onChange?: (ast: ASTNode) => void
+   }): JSX.Element => {
   if (node.kind === 'Document') {
     return (
       <>
@@ -140,6 +147,7 @@ export const Editor = (
 }) => {
 
   const [q, setQ] = useState(query);
+  const [a, setA] = useState(ast);
 
   useEffect(() => {
     console.log(query)
@@ -161,7 +169,7 @@ export const Editor = (
         padding: '30px'
       }
     }>
-      <ASTRender node={ast} />
+      <ASTRender node={ast} onChange={onChangeQuery}/>
     </div>
   );
 }

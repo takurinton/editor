@@ -8,7 +8,7 @@ const initialQuery = `
 query {
   data: hoge (
     q: { key: "value" }
-    l: ["list1", "liat2"]
+    l: ["list1", "list2"]
   ) {
     hoge
   }
