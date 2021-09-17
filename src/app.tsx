@@ -6,12 +6,7 @@ import { parse, print } from 'graphql';
 
 const initialQuery = `
 query {
-  data: hoge (
-    q: { key: "value" }
-    l: ["list1", "list2"]
-  ) {
-    hoge
-  }
+  ${print(fragment())}
 }
 `;
 
@@ -29,7 +24,6 @@ export function App() {
   useEffect(() => {
     const ast = parse(query); // DocumentNode
     setAst(ast);
-    console.log(ast)
   }, []);
 
   return (

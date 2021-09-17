@@ -8,7 +8,8 @@ const ASTRender = (
   }: { 
     node: ASTNode;
     onChange?: (ast: ASTNode) => void
-   }): JSX.Element => {
+  }
+): JSX.Element => {
   if (node.kind === 'Document') {
     return (
       <>
