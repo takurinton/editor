@@ -1,4 +1,14 @@
-export const Editor = ({ code, ast }: { code: string, ast: any }) => {
+import { DocumentNode } from "graphql"
+
+export const Editor = (
+  { 
+    query, 
+    ast 
+  }: { 
+    query: string, 
+    ast: DocumentNode, 
+    onChange: (query: string, ast: DocumentNode) => void
+}) => {
   return (
     <div style={
       {
@@ -6,7 +16,7 @@ export const Editor = ({ code, ast }: { code: string, ast: any }) => {
         background: 'gray', 
       }
     }>
-      { code }
+      { query }
     </div>
   )
 }

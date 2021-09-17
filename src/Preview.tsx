@@ -1,4 +1,14 @@
-export const Preview = ({ code, ast }: { code: string, ast: any }) => {
+import { DocumentNode } from "graphql";
+
+export const Preview = (
+  { 
+    query, 
+    ast 
+  }: { 
+    query: string, 
+    ast: DocumentNode, 
+    onChange: (query: string, ast: DocumentNode) => void
+}) => {
   return (
     <div style={
       {
@@ -6,7 +16,7 @@ export const Preview = ({ code, ast }: { code: string, ast: any }) => {
         background: 'red', 
       }
     }>
-      { code }
+      { query }
     </div>
   );
 }

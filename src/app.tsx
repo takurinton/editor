@@ -17,12 +17,12 @@ query {
 
 export function App() {
   const [query, setQuery] = useState(initialQuery); 
-  const [code, setCode] = useState('hoge');
+  const [ast, setAst] = useState(parse(query));
 
   const f = fragment();
   useEffect(() => {
     const p = parse(query); // DocumentNode
-    console.log(p) 
+    setAst(p)
   }, [query]);
 
   // const c = print()
@@ -35,8 +35,26 @@ export function App() {
         width: '80vw',
       }
     }>
-      <Editor code={query} ast={code} />
-      <Preview code={code} ast={code} />
+      <Editor 
+        query={query} 
+        ast={ast} 
+        onChange={
+          (query, ast) => {
+            setQuery(query);
+            setAst(ast);
+          }
+        }
+        />
+      <Preview 
+        query={query} 
+        ast={ast} 
+        onChange={
+          (query, ast) => {
+            setQuery(query);
+            setAst(ast);
+          }
+        }
+      />
     </div>
   )
 }
