@@ -6,6 +6,8 @@ import { useContext } from 'preact/hooks';
 type NodeContextType = {
   // addField(parent: SelectionSetNode, node: FieldNode): void;
   updateNode(node: ASTNode, newNode: ASTNode): void;
+  debug(): void;
+  getNode(): ASTNode;
 };
 
 const NodeContext = createContext<NodeContextType>(null as any);
@@ -21,7 +23,7 @@ export function NodeContextProvider({
 }: {
   children: JSX.Element;
   root: DocumentNode;
-  onChangeNode: (root: DocumentNode) => void;
+  onChangeNode: (root: ASTNode) => void;
 }) {
   const api: NodeContextType = {
     // addField(parent: SelectionSetNode, createdNode: FieldNode) {
@@ -41,9 +43,15 @@ export function NodeContextProvider({
     // },
     updateNode(node, newNode) {
       console.log(node)
-      console.log(newNode)
+      onChangeNode(newNode)
       return;
     },
+    debug() {
+      console.log(root);
+    },
+    getNode() {
+      return root;
+    }
   };
   return <NodeContext.Provider value={api} children={children}></NodeContext.Provider>;
 }

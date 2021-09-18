@@ -116,7 +116,7 @@ const ASTRender = (
               node.fields.map((v, i) => {
               return (
                 <>
-                  <code>{v.name.value}:</code><input type="text" value={v.value.value} onInput={e => setN(e.target.value)}></input>{ ', ' }<br />
+                  <code>{v.name.value}:</code><input type="text" value={v.value.value}></input>{ ', ' }<br />
                 </>
                 )
               })
@@ -130,7 +130,8 @@ const ASTRender = (
 
   if (node.kind === 'StringValue') {
     const handleChange = (e) => {
-      console.log(e.target.value)
+      const _node = context.getNode();
+      console.log(_node)
     };
 
     return (
@@ -149,16 +150,21 @@ export const Editor = (
   }: { 
     query: string, 
     ast: DocumentNode, 
-    onChange: (query: string, ast: DocumentNode) => void
+    onChange: (query: string, ast: ASTNode) => void
 }) => {
 
   const [q, setQ] = useState<string>(query);
   const [a, setA] = useState<ASTNode>(ast);
 
   useEffect(() => {
-    console.log(query)
     onChange(q, ast);
   }, [a]);
+
+  const onUChangeAst = (_ast: DocumentNode) => {
+    console.log(_ast)
+    setA(_ast);
+    onChange(q, a);
+  };
 
   const onChangeQuery = (e) => {
     console.log(e.target.value);
@@ -175,8 +181,15 @@ export const Editor = (
         padding: '30px'
       }
     }>
-      <NodeContextProvider>
-        <ASTRender node={ast} onChange={(a => setA(a))}/>
+      <NodeContextProvider 
+        root={ast}
+        onChangeNode={newDocument => {
+          console.log(a)
+          const astnode = newDocument as DocumentNode;
+          onUChangeAst(astnode);
+        }}
+      >
+        <ASTRender node={a}/>
       </NodeContextProvider>
     </div>
   );
