@@ -1,4 +1,4 @@
-import { ASTNode, DocumentNode, print } from "graphql"
+import { ASTNode, DocumentNode, DefinitionNode, print } from "graphql"
 import { useEffect, useState } from "preact/hooks"
 import { NodeContextProvider, useNodeContext } from './context';
 
@@ -75,16 +75,19 @@ const ASTRender = (
 
   if (node.kind === 'Argument') {
     if (node.value.kind === 'StringValue') {
-      const handleChange = (e) => {
-        const _node = context.getNode();
+      const handleChange = ({ currentTarget }: JSX.TargetedEvent<HTMLInputElement, Event>) => {
+        const _node = context.getNode() as DocumentNode;
         _node.definitions.map(v => {
-          v.selectionSet.selections.map(vv => {
-            vv.arguments.map(vvv => {
-              if (vvv.name.value === node.name.value) {
-                vvv.value.value = e.target.value
-              };
+          if (v.kind === 'OperationDefinition') {
+            v.selectionSet.selections.map(vv => {
+              // @ts-ignore
+              vv.arguments.map(vvv => {
+                if (vvv.name.value === node.name.value) {
+                  vvv.value.value = currentTarget.value;
+                };
+              });
             });
-          });
+          }
         });
         context.updateNode(node, _node);
       };
@@ -96,16 +99,19 @@ const ASTRender = (
       );
     }
     if (node.value.kind === 'IntValue') {
-      const handleChange = (e) => {
-        const _node = context.getNode();
+      const handleChange = ({ currentTarget }: JSX.TargetedEvent<HTMLInputElement, Event>) => {
+        const _node = context.getNode() as DocumentNode;
         _node.definitions.map(v => {
-          v.selectionSet.selections.map(vv => {
-            vv.arguments.map(vvv => {
-              if (vvv.name.value === node.name.value) {
-                vvv.value.value = e.target.value
-              };
+          if (v.kind === 'OperationDefinition') {
+            v.selectionSet.selections.map(vv => {
+              // @ts-ignore
+              vv.arguments.map(vvv => {
+                if (vvv.name.value === node.name.value) {
+                  vvv.value.value = currentTarget.value
+                };
+              });
             });
-          });
+          }
         });
         context.updateNode(node, _node);
       };
@@ -165,26 +171,9 @@ const ASTRender = (
     );
   }
 
-  // if (node.kind === 'StringValue') {
-  //   const handleChange = (e) => {
-  //     const _node = context.getNode();
-  //     _node.definitions.map(v => {
-  //       v.selectionSet.selections.map(vv => {
-  //         vv.arguments.map(vvv => {
-  //           console.log(vvv)
-  //         })
-  //       })
-  //     })
-  //     _node.definitions[0].selectionSet.selections[0].arguments[0].value.value = e.target.value;
-  //     context.updateNode(node, _node);
-  //   };
-
-  //   return (
-  //     <>
-  //       <input type="text"  value={node.value} onInput={handleChange}></input>
-  //     </>
-  //   );
-  // };
+  return (
+    <h1>知らんプロパティ</h1>
+  );
 }
 
 export const Editor = (
