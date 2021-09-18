@@ -59,11 +59,22 @@ export const fragment = (): FieldNode => {
           kind: 'Argument',
           name: {
             kind: 'Name',
-            value: 'value',
+            value: 'name',
           },
           value: {
             kind: 'StringValue',
             value: 'takurinton',
+          },
+        },
+        {
+          kind: 'Argument',
+          name: {
+            kind: 'Name',
+            value: 'age',
+          },
+          value: {
+            kind: 'IntValue',
+            value: '0',
           },
         },
       ],
@@ -74,7 +85,21 @@ export const fragment = (): FieldNode => {
             kind: 'Field',
             name: {
               kind: 'Name',
-              value: 'hoge',
+              value: 'name',
+            },
+          },
+          {
+            kind: 'Field',
+            name: {
+              kind: 'Name',
+              value: 'age',
+            },
+          },
+          {
+            kind: 'Field',
+            name: {
+              kind: 'Name',
+              value: 'genre',
             },
           },
         ],

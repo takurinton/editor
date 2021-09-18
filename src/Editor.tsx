@@ -95,6 +95,27 @@ const ASTRender = (
         </>
       );
     }
+    if (node.value.kind === 'IntValue') {
+      const handleChange = (e) => {
+        const _node = context.getNode();
+        _node.definitions.map(v => {
+          v.selectionSet.selections.map(vv => {
+            vv.arguments.map(vvv => {
+              if (vvv.name.value === node.name.value) {
+                vvv.value.value = e.target.value
+              };
+            });
+          });
+        });
+        context.updateNode(node, _node);
+      };
+
+      return (
+        <>
+          <ASTRender node={node.name} /> { ':' } <input type="number" value={node.value.value} onInput={handleChange}></input>
+        </>
+      );
+    }
   };
 
   if (node.kind === 'Name') {
