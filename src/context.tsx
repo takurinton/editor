@@ -1,5 +1,5 @@
 import { ASTNode, DocumentNode, FieldNode, print, SelectionSetNode } from 'graphql';
-import { visit } from 'graphql';
+import { visit, parse } from 'graphql';
 import { createContext, JSX } from 'preact';
 import { useContext } from 'preact/hooks';
 
@@ -42,7 +42,9 @@ export function NodeContextProvider({
     //   return;
     // },
     updateNode(node, newNode) {
-      console.log(newNode)
+      // console.log(newNode)
+      const q = print(newNode);
+      console.log(q)
       onChangeNode(newNode)
       return;
     },

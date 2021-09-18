@@ -1,4 +1,4 @@
-import { ASTNode, DocumentNode } from "graphql"
+import { ASTNode, DocumentNode, print } from "graphql"
 import { useEffect, useState } from "preact/hooks"
 import { NodeContextProvider, useNodeContext } from './context';
 
@@ -131,6 +131,7 @@ const ASTRender = (
   if (node.kind === 'StringValue') {
     const handleChange = (e) => {
       const _node = context.getNode();
+      console.log(node)
       _node.definitions[0].selectionSet.selections[0].arguments[0].value.value = e.target.value;
       context.updateNode(node, _node);
     };
@@ -161,8 +162,10 @@ export const Editor = (
     onChange(q, ast);
   }, [a]);
 
-  const onUChangeAst = (_ast: DocumentNode) => {
+  const onChangeAst = (_ast: DocumentNode) => {
+    const _query = print(_ast);
     setA(_ast);
+    setQ(_query);
     onChange(q, a);
   };
 
@@ -185,7 +188,7 @@ export const Editor = (
         root={ast}
         onChangeNode={newDocument => {
           const astnode = newDocument as DocumentNode;
-          onUChangeAst(astnode);
+          onChangeAst(astnode);
         }}
       >
         <ASTRender node={a}/>
