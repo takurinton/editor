@@ -74,11 +74,27 @@ const ASTRender = (
   };
 
   if (node.kind === 'Argument') {
-    return (
-      <>
-        <ASTRender node={node.name} /> { ':' } <ASTRender node={node.value}  />
-      </>
-    );
+    if (node.value.kind === 'StringValue') {
+      const handleChange = (e) => {
+        const _node = context.getNode();
+        _node.definitions.map(v => {
+          v.selectionSet.selections.map(vv => {
+            vv.arguments.map(vvv => {
+              if (vvv.name.value === node.name.value) {
+                vvv.value.value = e.target.value
+              };
+            });
+          });
+        });
+        context.updateNode(node, _node);
+      };
+
+      return (
+        <>
+          <ASTRender node={node.name} /> { ':' } <input type="text" value={node.value.value} onInput={handleChange}></input>
+        </>
+      );
+    }
   };
 
   if (node.kind === 'Name') {
@@ -128,19 +144,26 @@ const ASTRender = (
     );
   }
 
-  if (node.kind === 'StringValue') {
-    const handleChange = (e) => {
-      const _node = context.getNode();
-      _node.definitions[0].selectionSet.selections[0].arguments[0].value.value = e.target.value;
-      context.updateNode(node, _node);
-    };
+  // if (node.kind === 'StringValue') {
+  //   const handleChange = (e) => {
+  //     const _node = context.getNode();
+  //     _node.definitions.map(v => {
+  //       v.selectionSet.selections.map(vv => {
+  //         vv.arguments.map(vvv => {
+  //           console.log(vvv)
+  //         })
+  //       })
+  //     })
+  //     _node.definitions[0].selectionSet.selections[0].arguments[0].value.value = e.target.value;
+  //     context.updateNode(node, _node);
+  //   };
 
-    return (
-      <>
-        <input type="text" value={node.value} onInput={handleChange}></input>
-      </>
-    );
-  };
+  //   return (
+  //     <>
+  //       <input type="text"  value={node.value} onInput={handleChange}></input>
+  //     </>
+  //   );
+  // };
 }
 
 export const Editor = (
