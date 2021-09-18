@@ -1,6 +1,29 @@
-import { ASTNode, DocumentNode, DefinitionNode, print } from "graphql"
+import { ASTNode, DocumentNode, DefinitionNode, print, ArgumentNode } from "graphql"
 import { useEffect, useState } from "preact/hooks"
 import { NodeContextProvider, useNodeContext } from './context';
+
+const onChangeArgments = ({
+  _node,
+  node,
+  currentTarget, 
+}: {
+  _node: DocumentNode;
+  node: ArgumentNode;
+  currentTarget: HTMLInputElement
+}) => {
+  _node.definitions.map(v => {
+    if (v.kind === 'OperationDefinition') {
+      v.selectionSet.selections.map(vv => {
+        // @ts-ignore
+        vv.arguments.map(vvv => {
+          if (vvv.name.value === node.name.value) {
+            vvv.value.value = currentTarget.value;
+          };
+        });
+      });
+    }
+  });
+}
 
 const ASTRender = (
   { 
@@ -77,48 +100,27 @@ const ASTRender = (
     if (node.value.kind === 'StringValue') {
       const handleChange = ({ currentTarget }: JSX.TargetedEvent<HTMLInputElement, Event>) => {
         const _node = context.getNode() as DocumentNode;
-        _node.definitions.map(v => {
-          if (v.kind === 'OperationDefinition') {
-            v.selectionSet.selections.map(vv => {
-              // @ts-ignore
-              vv.arguments.map(vvv => {
-                if (vvv.name.value === node.name.value) {
-                  vvv.value.value = currentTarget.value;
-                };
-              });
-            });
-          }
-        });
+        onChangeArgments({ _node, node, currentTarget });
         context.updateNode(node, _node);
       };
 
       return (
         <>
-          <ASTRender node={node.name} /> { ':' } <input type="text" value={node.value.value} onInput={handleChange}></input>
+          <ASTRender node={node.name} /> { ':' } <input type="text" value={node.value.value} onInput={handleChange}></input> { ', ' } <br />
         </>
       );
     }
+    
     if (node.value.kind === 'IntValue') {
       const handleChange = ({ currentTarget }: JSX.TargetedEvent<HTMLInputElement, Event>) => {
         const _node = context.getNode() as DocumentNode;
-        _node.definitions.map(v => {
-          if (v.kind === 'OperationDefinition') {
-            v.selectionSet.selections.map(vv => {
-              // @ts-ignore
-              vv.arguments.map(vvv => {
-                if (vvv.name.value === node.name.value) {
-                  vvv.value.value = currentTarget.value
-                };
-              });
-            });
-          }
-        });
+        onChangeArgments({ _node, node, currentTarget });
         context.updateNode(node, _node);
       };
 
       return (
         <>
-          <ASTRender node={node.name} /> { ':' } <input type="number" value={node.value.value} onInput={handleChange}></input>
+          <ASTRender node={node.name} /> { ':' } <input type="number" value={node.value.value} onInput={handleChange}></input> { ', ' } <br />
         </>
       );
     }
