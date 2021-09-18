@@ -116,7 +116,7 @@ const ASTRender = (
               node.fields.map((v, i) => {
               return (
                 <>
-                  <code>{v.name.value}:</code><input type="text" value={v.value.value}></input>{ ', ' }<br />
+                  <code>{v.name.value}:</code><input type="text" value={v.name.value}></input>{ ', ' }<br />
                 </>
                 )
               })
