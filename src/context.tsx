@@ -42,7 +42,7 @@ export function NodeContextProvider({
     //   return;
     // },
     updateNode(node, newNode) {
-      console.log(node)
+      console.log(newNode)
       onChangeNode(newNode)
       return;
     },

@@ -131,7 +131,8 @@ const ASTRender = (
   if (node.kind === 'StringValue') {
     const handleChange = (e) => {
       const _node = context.getNode();
-      console.log(_node)
+      _node.definitions[0].selectionSet.selections[0].arguments[0].value.value = e.target.value;
+      context.updateNode(node, _node);
     };
 
     return (
@@ -161,7 +162,6 @@ export const Editor = (
   }, [a]);
 
   const onUChangeAst = (_ast: DocumentNode) => {
-    console.log(_ast)
     setA(_ast);
     onChange(q, a);
   };
@@ -184,7 +184,6 @@ export const Editor = (
       <NodeContextProvider 
         root={ast}
         onChangeNode={newDocument => {
-          console.log(a)
           const astnode = newDocument as DocumentNode;
           onUChangeAst(astnode);
         }}
