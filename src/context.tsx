@@ -25,9 +25,8 @@ export function NodeContextProvider({
 }) {
   const api: NodeContextType = {
     updateNode(node, newNode) {
-      // console.log(newNode)
-      const q = print(newNode);
-      console.log(q)
+      console.log('query: ', print(newNode))
+      console.log('ast: ', newNode)
       onChangeNode(newNode)
       return;
     },
