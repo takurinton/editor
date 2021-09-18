@@ -74,7 +74,7 @@ export const fragment = (): FieldNode => {
           },
           value: {
             kind: 'IntValue',
-            value: '0',
+            value: '21',
           },
         },
       ],
