@@ -1,4 +1,4 @@
-import { ASTNode, DocumentNode, DefinitionNode, print, ArgumentNode } from "graphql"
+import { ASTNode, DocumentNode, DefinitionNode, print, ArgumentNode, SelectionNode } from "graphql"
 import { useEffect, useState } from "preact/hooks"
 import { NodeContextProvider, useNodeContext } from './context';
 
@@ -25,6 +25,10 @@ const onChangeArgments = ({
   });
 }
 
+const onChangeSelections = (selections: SelectionNode[]) => {
+
+}
+
 const ASTRender = (
   { 
     node, 
@@ -37,6 +41,7 @@ const ASTRender = (
   const context = useNodeContext();
   
   if (node.kind === 'Document') {
+    console.log(node)
     return (
       <>
         {
@@ -71,6 +76,8 @@ const ASTRender = (
   };
 
   if (node.kind === 'Field') {
+    const [selections, setSelections] = useState(node.selectionSet?.selections);
+
     return (
       <>
         {node.alias && (
@@ -92,6 +99,17 @@ const ASTRender = (
         {node.directives?.map((directive, i) => {
           return <ASTRender key={i} node={directive}/>;
         })}
+        {node.selectionSet?.selections.map(v => {
+          return <p>{v.name.value}</p>
+        })}
+        <form onSubmit={e => {
+          e.preventDefault();
+          // ここ selectionSet の Field 入れないとダメだ、文字列でもいいんだけどどこかで組み立てる必要がある
+          setSelections([...selections, ])
+        }}>
+          <input type="text" onInput={e => console.log(e.currentTarget.value)} value={''} />
+          <button type="submit">add field</button>
+        </form>
       </>
     )
   };
