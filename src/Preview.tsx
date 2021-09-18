@@ -1,4 +1,4 @@
-import { DocumentNode } from "graphql";
+import { ASTNode } from "graphql";
 
 export const Preview = (
   { 
@@ -6,8 +6,8 @@ export const Preview = (
     ast 
   }: { 
     query: string, 
-    ast: DocumentNode, 
-    onChange: (query: string, ast: DocumentNode) => void
+    ast: ASTNode, 
+    onChange: (query: string, ast: ASTNode) => void
 }) => {
   return (
     <div style={

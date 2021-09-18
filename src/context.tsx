@@ -1,10 +1,8 @@
 import { ASTNode, DocumentNode, FieldNode, print, SelectionSetNode } from 'graphql';
-import { visit, parse } from 'graphql';
 import { createContext, JSX } from 'preact';
 import { useContext } from 'preact/hooks';
 
 type NodeContextType = {
-  // addField(parent: SelectionSetNode, node: FieldNode): void;
   updateNode(node: ASTNode, newNode: ASTNode): void;
   debug(): void;
   getNode(): ASTNode;
@@ -22,25 +20,10 @@ export function NodeContextProvider({
   onChangeNode,
 }: {
   children: JSX.Element;
-  root: DocumentNode;
+  root: ASTNode;
   onChangeNode: (root: ASTNode) => void;
 }) {
   const api: NodeContextType = {
-    // addField(parent: SelectionSetNode, createdNode: FieldNode) {
-    //   const newNode = visit(root, {
-    //     SelectionSet: c => {
-    //       if (c === parent) {
-    //         return {
-    //           ...parent,
-    //           selections: [...parent.selections, createdNode],
-    //         };
-    //       }
-    //     },
-    //   });
-    //   const code = print(newNode);
-    //   onChangeNode(newNode);
-    //   return;
-    // },
     updateNode(node, newNode) {
       // console.log(newNode)
       const q = print(newNode);

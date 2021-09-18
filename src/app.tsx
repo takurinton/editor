@@ -2,7 +2,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { Editor } from './Editor';
 import { Preview } from './Preview';
 import { fragment } from './fragment';
-import { parse, print } from 'graphql';
+import { ASTNode, parse, print } from 'graphql';
 
 const initialQuery = `
 query {
@@ -13,13 +13,8 @@ query {
 const initialAst = parse(initialQuery)
 
 export function App() {
-  const [query, setQuery] = useState(initialQuery); 
-  const [ast, setAst] = useState(initialAst);
-
-  // const f = fragment();
-  // useEffect(() => {
-  //   setQuery(query);
-  // }, [query]);
+  const [query, setQuery] = useState<string>(initialQuery); 
+  const [ast, setAst] = useState<ASTNode>(initialAst);
 
   useEffect(() => {
     const ast = parse(query); // DocumentNode

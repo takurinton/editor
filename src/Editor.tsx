@@ -97,7 +97,7 @@ const ASTRender = (
           return (
             <>
               {`${i ? ', ' : ''}`}
-              <ASTRender node={v}  />
+              <ASTRender node={v} />
             </>
           );
         })}
@@ -131,7 +131,6 @@ const ASTRender = (
   if (node.kind === 'StringValue') {
     const handleChange = (e) => {
       const _node = context.getNode();
-      console.log(node)
       _node.definitions[0].selectionSet.selections[0].arguments[0].value.value = e.target.value;
       context.updateNode(node, _node);
     };
@@ -151,7 +150,7 @@ export const Editor = (
     onChange
   }: { 
     query: string, 
-    ast: DocumentNode, 
+    ast: ASTNode, 
     onChange: (query: string, ast: ASTNode) => void
 }) => {
 
@@ -169,12 +168,6 @@ export const Editor = (
     onChange(q, a);
   };
 
-  const onChangeQuery = (e) => {
-    console.log(e.target.value);
-    setQ(e.target.value);
-  }
-
-  // AST が変更されたらクエリを変更するようにもしたい
   return (
     <div style={
       {
