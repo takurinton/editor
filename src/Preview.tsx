@@ -7,7 +7,7 @@ export const Preview = (
   }: { 
     query: string, 
     ast: ASTNode, 
-    onChange: (query: string, ast: ASTNode) => void
+    // onChange: (query: string, ast: ASTNode) => void
 }) => {
   return (
     <div style={

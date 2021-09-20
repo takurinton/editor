@@ -42,12 +42,12 @@ export function App() {
       <Preview 
         query={query} 
         ast={ast} 
-        onChange={
-          (query, ast) => {
-            setQuery(query);
-            setAst(ast);
-          }
-        }
+        // onChange={
+        //   (query, ast) => {
+        //     setQuery(query);
+        //     setAst(ast);
+        //   }
+        // }
       />
     </div>
   )

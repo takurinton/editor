@@ -1,4 +1,4 @@
-import type { FieldNode, ValueNode } from 'graphql';
+import type { FieldNode } from 'graphql';
 
 export const fragment = (): FieldNode => {
     return {

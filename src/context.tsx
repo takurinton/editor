@@ -1,4 +1,4 @@
-import { ASTNode, DocumentNode, FieldNode, print, SelectionSetNode } from 'graphql';
+import { ASTNode, print } from 'graphql';
 import { createContext, JSX } from 'preact';
 import { useContext } from 'preact/hooks';
 
